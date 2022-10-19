@@ -1,5 +1,4 @@
-# multifrequency imaging scripts for Chael+ 2022 (submited to the Astrophysical Journal)
-
+# multifrequency imaging scripts for Chael+ 2022
 This repository hosts the RML image reconstruction scripts used to produce the images in the paper ``Multi-frequency black hole imaging with the next-generation Event Horizon Telescope.''
 
 These scripts require installation of [eht-imaging](https://github.com/achael/eht-imaging) version 1.2.5, as well as some other python libraries. 
