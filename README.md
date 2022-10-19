@@ -7,7 +7,7 @@ If you use want to use the included simulation images or datasets in your work, 
 
 The scripts are in the following sub-directories corresponding to sections in the paper: 
 ### sec_4.2
-Single- and Multi-frequency imaging of simulated ngEHT datasets from 86,230,345 GHz. These scripts were used to reconstruct images from the included datasets for figures 3-6.  The simulation models are from [Chael+ 2019](https://ui.adsabs.harvard.edu/abs/2019MNRAS.486.2873C/abstract) and [Mizuno+ 2022](https://ui.adsabs.harvard.edu/abs/2021MNRAS.506..741M/abstract).
+Single- and Multi-frequency imaging of simulated ngEHT datasets from 86,230,345 GHz. These scripts were used to reconstruct images from the included datasets for figures 3-6.  The simulation models are from [Chael+ 2019](https://ui.adsabs.harvard.edu/abs/2019MNRAS.486.2873C/abstract) and [Mizuno+ 2021](https://ui.adsabs.harvard.edu/abs/2021MNRAS.506..741M/abstract).
 
 ### sec_4.3
 Single- and Multi-frequency imaging of simulated ngEHT datasets from 213,215,227,229 GHz data. These scripts were used to reconstruct images from the included datasets for figures 3-6. These simulation models are from [Ricarte+ 2022](https://ui.adsabs.harvard.edu/abs/2022arXiv220202408R/abstract).
