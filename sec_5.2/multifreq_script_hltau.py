@@ -10,8 +10,6 @@ import ehtim as eh
 from ehtim.calibrating import self_cal as sc
 from ehtim.image import get_specim, blur_mf
 
-import time
-time.sleep(8*3600)
 
 plt.close('all')
 

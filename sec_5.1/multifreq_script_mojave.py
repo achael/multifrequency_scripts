@@ -20,7 +20,7 @@ ep = 1.e-8
 
 data_term={'cphase':20, 'logcamp':20,'amp':1}
 data_term2={'cphase':20, 'logcamp':1,'amp':10}
-data_term3={'vis':10}
+data_term2={'cphase':20, 'amp':20}
 
 reg_term_mf1 = {'l1':1,'l2_alpha':0,'tv_alpha':.75}
 reg_term_mf2 = {'l1':1,'tv':1,'l2_alpha':0,'tv_alpha':.75}
@@ -240,8 +240,8 @@ for source in sources:
        
     # save results
     out = imgr.out_last()    
-    out.get_image_mf(obsX.rf).save_fits(direc+'./'+source+'_x_mf.fits')
-    out.get_image_mf(obsY.rf).save_fits(direc+'./'+source+'_y_mf.fits')
-    out.get_image_mf(obsJ.rf).save_fits(direc+'./'+source+'_j_mf.fits')
+    out.get_image_mf(obsX.rf).save_fits(outdir + source+'_x_mf.fits')
+    out.get_image_mf(obsY.rf).save_fits(outdir + source+'_y_mf.fits')
+    out.get_image_mf(obsJ.rf).save_fits(outdir + source+'_j_mf.fits')
 
     plt.close('all')
