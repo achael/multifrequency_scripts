@@ -20,7 +20,7 @@ ep = 1.e-8
 
 data_term={'cphase':20, 'logcamp':20,'amp':1}
 data_term2={'cphase':20, 'logcamp':1,'amp':10}
-data_term2={'cphase':20, 'amp':20}
+data_term3={'cphase':20, 'amp':20}
 
 reg_term_mf1 = {'l1':1,'l2_alpha':0,'tv_alpha':.75}
 reg_term_mf2 = {'l1':1,'tv':1,'l2_alpha':0,'tv_alpha':.75}
