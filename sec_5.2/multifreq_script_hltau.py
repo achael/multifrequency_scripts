@@ -248,10 +248,10 @@ for i in range(2):
 
 # Save final images
 for rf in rflist:            
-    out.get_image_mf(rf).save_fits(outdir + 'hltau_mf_%0.1f.fits'%(rf/1.e9))
+    out.get_image_mf(rf).save_fits(outdir + 'hltau_%0.1f_mf.fits'%(rf/1.e9))
 
 # Save final self-calibrated data
 for kk, obs in enumerate(obs_sc_list):
-    obs.save_uvfits(outdir + 'hltau_mf_%0.1f.uvfits'%(rflist[kk]/1.e9))
+    obs.save_uvfits(outdir + 'hltau_%0.1f_mf_selfcal.uvfits'%(rflist[kk]/1.e9))
  
 

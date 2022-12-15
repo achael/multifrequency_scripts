@@ -178,8 +178,7 @@ for model in models:
             obs_sc = eh.self_cal.self_cal(obs_sc,im_selfcal,method='both',
                                           processes=10,ttype='nfft',use_grad=True)
 
-            # save self-calibrated dataset
-            obs_sc.save_uvfits(outdir + model+'_ngeht_'+label+'_nomf_selfcal.uvfits')
+
                         
             # reimage with calibrated amplitudes
             rprior = im_selfcal.blur_circ(50*eh.RADPERUAS)
@@ -201,8 +200,11 @@ for model in models:
                 out = imgr.out_last()
               
             # save results                
-            out.save_fits(outdir + model +'_ngeht_'+label+'_nomf.fits')
-            
+            out.save_fits(outdir + model +'_'+label+'_nomf.fits')
+           
+            # save self-calibrated dataset
+            obs_sc.save_uvfits(outdir + model+'_'+label+'_nomf_selfcal.uvfits')
+                        
     #####################################################################################
     # Image all frequencies together with spectral index
     #####################################################################################
@@ -258,8 +260,6 @@ for model in models:
                                           processes=10,ttype='nfft',use_grad=True)
             obs_sc_list.append(obs_sc)
             
-            # save self-calibrated dataset
-            obs_sc.save_uvfits(outdir + model+'_ngeht_'+label+'_mf_selfcal.uvfits')
                      
         # reimage with calibrated amplitudes
         rprior = out.get_image_mf(reffreq).blur_circ(50*eh.RADPERUAS)
@@ -280,11 +280,14 @@ for model in models:
             imgr.maxit_next = maxit 
             imgr.make_image_I(mf=True,show_updates=False)
             out = imgr.out_last()
-                                   
-        # save final results
-        out.get_image_mf(obs86.rf).save_fits(outdir+model+'_ngeht_86_mf.fits')
-        out.get_image_mf(obs230.rf).save_fits(outdir+model+'_ngeht_230_mf.fits')
-        out.get_image_mf(obs345.rf).save_fits(outdir+model+'_ngeht_345_mf.fits')
+                                       
+        # save final images
+        for jj in range(len(obs_sc_list)):
+            out.get_image_mf(obs_sc_list[jj].rf).save_fits(outdir + model + '_' + labellist[jj] + '_mf.fits')
 
+        # save final self-calibrated data
+        for jj in range(len(obs_sc_list)):
+            obs_sc_list[jj].save_uvfits(outdir + model + '_' + labellist[jj] + '_mf_selfcal.uvfits')
+                    
 plt.close('all')
 

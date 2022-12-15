@@ -36,10 +36,11 @@ reg_term_mf1 = {'l1':1,'simple':.1, 'tv':2, 'flux':10,
                 'l2_alpha':5.,'tv_alpha':5.}
                               
 # which models to image
-models = ['MAD','SANE']
+#models = ['MAD','SANE']
+models = ['SANE']
 
 # which imaging strategy to run
-image_nomf = True
+image_nomf = False
 image_mf = True
 
 for model in models:
@@ -124,8 +125,7 @@ for model in models:
             obs_sc = eh.self_cal.self_cal(obs,im_selfcal,method='both',
                                           processes=10,ttype='nfft',use_grad=True)
                                           
-            # save self-calibrated dataset
-            obs_sc.save_uvfits(outdir + model+'_'+label+'_nomf_selfcal.uvfits')
+
                 
             # reimage with visibility amplitudes
             imgr  = eh.imager.Imager(obs_sc, rprior, rprior, zbl,
@@ -144,8 +144,11 @@ for model in models:
                 imgr.maxit_next *= 2    
 
             # save results
-            out.save_fits(outdir+model+'_'+label+'_nomf.fits')            
+            out.save_fits(outdir + model + '_' + label + '_nomf.fits')            
 
+            # save self-calibrated dataset
+            obs_sc.save_uvfits(outdir + model + '_' + label + '_nomf_selfcal.uvfits')
+            
     #####################################################################################
     # Image four frequencies together with spectral index 
     #####################################################################################
@@ -182,7 +185,7 @@ for model in models:
 
         # self-calibrate visibility amplitudes
         obs_sc_list = []
-        for kk,obs in enumerate([obs213, obs215,obs227, obs229]):
+        for kk,obs in enumerate([obs213, obs215, obs227, obs229]):
         
             im_selfcal = out.get_image_mf(obs.rf)
             im_selfcal.imvec *= zbllist[kk]/im_selfcal.total_flux() # fix the total flux
@@ -190,9 +193,10 @@ for model in models:
                                           processes=10,ttype='nfft',use_grad=True)
             obs_sc_list.append(obs_sc)
             
-            # save self-calibrated dataset
-            obs_sc.save_uvfits(outdir+model+'_'+labellist[kk]+'_nomf_selfcal.uvfits')
-            
+        # save final self-calibrated data
+        for jj in range(len(obs_sc_list)):
+            obs_sc_list[jj].save_uvfits(outdir + model + '_' + labellist[jj] + '_mf_selfcal.uvfits')
+                        
         # reimage with visibiilty amplitudes
         imgr  = eh.imager.Imager(obs_sc_list, rprior, rprior, refzbl,
                                  data_term=data_term_2,
@@ -210,9 +214,6 @@ for model in models:
             imgr.init_next = init_next
             imgr.maxit_next *=2
                                                      
-        # save results
-        out.get_image_mf(obs213.rf).save_fits(outdir+model+'_213.fits')
-        out.get_image_mf(obs215.rf).save_fits(outdir+model+'_215.fits')
-        out.get_image_mf(obs227.rf).save_fits(outdir+model+'_227.fits')
-        out.get_image_mf(obs229.rf).save_fits(outdir+model+'_229.fits')
-
+        # save final images
+        for jj in range(len(obs_sc_list)):
+            out.get_image_mf(obs_sc_list[jj].rf).save_fits(outdir + model + '_' + labellist[jj] + '_mf.fits')

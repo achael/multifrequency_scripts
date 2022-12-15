@@ -187,10 +187,11 @@ for source in sources:
                                     processes=8,ttype='nfft',use_grad=True)
     obsJ_sc = eh.self_cal.self_cal(obsJ, imJ_sc, method='both',
                                     processes=8,ttype='nfft',use_grad=True)
-
+    obs_sc_list = [obsX_sc, obsY_sc, obsJ_sc]
+    
     # reimage with visibility amplitudes
     rprior2 = out0.blur_circ(resX)
-    imgr  = eh.imager.Imager([obsX_sc, obsY_sc, obsJ_sc], rprior2, rprior2, zblY,
+    imgr  = eh.imager.Imager(obs_sc_list, rprior2, rprior2, zblY,
                             data_term=data_term2,
                             reg_term=reg_term_mf2,
                             mf_which_solve=mf_which_solve,
@@ -218,10 +219,11 @@ for source in sources:
                                     processes=8,ttype='nfft',use_grad=True)
     obsJ_sc = eh.self_cal.self_cal(obsJ, imJ_sc, method='both',
                                     processes=8,ttype='nfft',use_grad=True)
-
+    obs_sc_list = [obsX_sc, obsY_sc, obsJ_sc]
+    
     # reimage with complex visibilities
     rprior3 = out1.blur_circ(resX)
-    imgr  = eh.imager.Imager([obsX_sc, obsY_sc, obsJ_sc], rprior3, rprior3, zblY,
+    imgr  = eh.imager.Imager(obs_sc_list, rprior3, rprior3, zblY,
                             data_term=data_term3,
                             reg_term=reg_term_mf2,
                             mf_which_solve=mf_which_solve,
@@ -238,10 +240,13 @@ for source in sources:
        imgr.maxit_next *= 2
        imgr.maxit_next = np.min((imgr.maxit_next,10000))
        
-    # save results
+    # save final images
     out = imgr.out_last()    
-    out.get_image_mf(obsX.rf).save_fits(outdir + source+'_x_mf.fits')
-    out.get_image_mf(obsY.rf).save_fits(outdir + source+'_y_mf.fits')
-    out.get_image_mf(obsJ.rf).save_fits(outdir + source+'_j_mf.fits')
+    for jj in range(len(obs_sc_list)):
+        out.get_image_mf(obs_sc_list[jj].rf).save_fits(outdir + source + '_' + labellist[jj] + '_mf.fits')
 
+    # save final self-calibrated data
+    for jj in range(len(obs_sc_list)):
+        obs_sc_list[jj].save_uvfits(outdir + source + '_' + labellist[jj] + '_mf_selfcal.uvfits')
+            
     plt.close('all')
