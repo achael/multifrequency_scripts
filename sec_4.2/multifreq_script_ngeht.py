@@ -41,10 +41,10 @@ reg_term_mf = {'l1':1,'tv':1,'flux':10,
                'l2_beta':30,'tv_beta':30}
 
 # which models to image
-models = ['Chael','Mizuno']
+models = ['Chael'] #['Chael','Mizuno']
 
 # which imaging strategy to run
-image_nomf = True
+image_nomf = False
 image_mf = True
     
 for model in models:

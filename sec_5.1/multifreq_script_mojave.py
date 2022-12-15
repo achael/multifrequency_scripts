@@ -27,7 +27,7 @@ reg_term_mf2 = {'l1':1,'tv':1,'l2_alpha':0,'tv_alpha':.75}
 mf_which_solve = (1,1,0)
 
 # which sources to image
-sources = ['0212','1730']
+sources = ['0212'] #['0212','1730']
 
 for source in sources:
     # output directory

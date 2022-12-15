@@ -10,7 +10,6 @@ import ehtim as eh
 from ehtim.calibrating import self_cal as sc
 from ehtim.image import get_specim, blur_mf
 
-
 plt.close('all')
 
 # image parameters
