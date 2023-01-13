@@ -39,7 +39,7 @@ reg_term_mf1 = {'l1':1,'simple':.1, 'tv':2, 'flux':10,
 models = ['MAD','SANE']
 
 # which imaging strategy to run
-image_nomf = False
+image_nomf = True
 image_mf = True
 
 for model in models:

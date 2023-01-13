@@ -27,7 +27,7 @@ reg_term_mf2 = {'l1':1,'tv':1,'l2_alpha':0,'tv_alpha':.75}
 mf_which_solve = (1,1,0)
 
 # which sources to image
-sources = ['0212'] #['0212','1730']
+sources = ['0212','1730']
 
 for source in sources:
     # output directory
@@ -43,14 +43,16 @@ for source in sources:
 
         # re-scale the noise to ensure correct statistics on closure triangles
         # rescaling factors can be obtained from obs.estimate_noise_rescale_factor()
-        # but this takes a very long time on these large datasets
-        obsX.data['sigma'] *= 1
-        obsY.data['sigma'] *= 1.517
+        obsX = obsX.rescale_noise(1)
+        obsY = obsY.rescale_noise(1.52)
         
         # apply post-priori amplitude scaling to the 12.1 GHz data
         # Source: Matt Lister, private communication
         obsJ.data['vis'] *= 1.1
-        obsJ.data['sigma'] *= 1.1
+        obsJ.data['qvis'] *= 1.1
+        obsJ.data['uvis'] *= 1.1        
+        obsJ.data['vvis'] *= 1.1      
+        obsY = obsJ.rescale_noise(1.1)
             
         # shift the visibilitity phases/the image centroid
         shift =  -10000*eh.RADPERUAS/2.
@@ -66,14 +68,16 @@ for source in sources:
 
         # re-scale the noise to ensure correct statistics on closure triangles
         # rescaling factors can be obtained from obs.estimate_noise_rescale_factor()
-        # but this takes a very long time on these large datasets
-        obsX.data['sigma'] *= 1
-        obsY.data['sigma'] *= 2.2
+        obsX = obsX.rescale_noise(1)
+        obsY = obsY.rescale_noise(2.21)
         
         # apply post-priori amplitude scaling to 12.1 GHz data
         # Source: Matt Lister, private communication
         obsJ.data['vis'] *= 1.1
-        obsJ.data['sigma'] *= 1.1
+        obsJ.data['qvis'] *= 1.1
+        obsJ.data['uvis'] *= 1.1        
+        obsJ.data['vvis'] *= 1.1      
+        obsJ = obsJ.rescale_noise(1.1)
         
         # shift the visibilitity phases/the image centroid
         shift =  -20000*eh.RADPERUAS/2.
@@ -92,8 +96,8 @@ for source in sources:
 
     # zero baseline flux from short-baseline visibility median
     zblJ = np.median(obsJ.flag_uvdist(uv_min=1.e7,output='flagged').unpack(['amp'])['amp'])
-    zblY = np.median(obsY.flag_uvdist(uv_min=5.e6,output='flagged').unpack(['amp'])['amp'])
-    zblX = np.median(obsX.flag_uvdist(uv_min=5.e6,output='flagged').unpack(['amp'])['amp'])
+    zblY = np.median(obsY.flag_uvdist(uv_min=1.e7,output='flagged').unpack(['amp'])['amp'])
+    zblX = np.median(obsX.flag_uvdist(uv_min=1.e7,output='flagged').unpack(['amp'])['amp'])
     zbllist = [zblX,zblY,zblJ]
     reffreq = obsY.rf
         
@@ -188,7 +192,8 @@ for source in sources:
     obsJ_sc = eh.self_cal.self_cal(obsJ, imJ_sc, method='both',
                                     processes=8,ttype='nfft',use_grad=True)
     obs_sc_list = [obsX_sc, obsY_sc, obsJ_sc]
-    
+
+            
     # reimage with visibility amplitudes
     rprior2 = out0.blur_circ(resX)
     imgr  = eh.imager.Imager(obs_sc_list, rprior2, rprior2, zblY,
@@ -220,7 +225,8 @@ for source in sources:
     obsJ_sc = eh.self_cal.self_cal(obsJ, imJ_sc, method='both',
                                     processes=8,ttype='nfft',use_grad=True)
     obs_sc_list = [obsX_sc, obsY_sc, obsJ_sc]
-    
+
+            
     # reimage with complex visibilities
     rprior3 = out1.blur_circ(resX)
     imgr  = eh.imager.Imager(obs_sc_list, rprior3, rprior3, zblY,

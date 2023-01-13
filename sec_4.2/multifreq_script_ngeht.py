@@ -16,10 +16,10 @@ from ehtim.image import get_specim, blur_mf
 plt.close('all')
 
 # image parameters
-fov86  = 700 # 600
-fov230 = 700 # 600
-fov345 = 700 # 600
-npix   = 200 # 200
+fov86  = 700 
+fov230 = 700 
+fov345 = 700 
+npix   = 200
 
 prior_fwhm_uas = 45*eh.RADPERUAS
 disk_rad_uas = 100*eh.RADPERUAS
@@ -28,29 +28,40 @@ disk_rad_uas = 100*eh.RADPERUAS
 ep = 1.e-6
 STOP=1.e-8
 maxit = 5000
-nloops = 3
+nloops = 2
 
 data_term = {'logcamp':20, 'cphase':20}  
 data_term_2 = {'amp':20, 'cphase':20}      
 
 reg_term0 = {'l1':1,'flux':10}
-reg_term1 = {'l1':1,'tv':1.,'flux':10}
+reg_term1 = {'l1':1,'tv':1,'flux':10}
 
+# fiducial values
 reg_term_mf = {'l1':1,'tv':1,'flux':10,
                'l2_alpha':20,'tv_alpha':20,
                'l2_beta':30,'tv_beta':30}
+               
+# high TV             
+#reg_term_mf = {'l1':1,'tv':1,'flux':1,
+#               'l2_alpha':20,'tv_alpha':100,
+#               'l2_beta':30,'tv_beta':100}
 
+# no TV
+#reg_term_mf = {'l1':1,'tv':1,'flux':1,
+#               'l2_alpha':20,'tv_alpha':0,
+#               'l2_beta':30,'tv_beta':0}
+                                             
 # which models to image
-models = ['Chael'] #['Chael','Mizuno']
+models = ['Mizuno','Chael'] 
 
 # which imaging strategy to run
-image_nomf = False
+image_nomf = True
 image_mf = True
     
 for model in models:
     # output directory
     outdir = './output_' + model + '/' 
-
+    
     #######################################################
     # Load the synthetic observations
     #######################################################
@@ -223,7 +234,7 @@ for model in models:
         beta0 = 0
         
         # Start with the single-frequency 86 GHZ image with a constant spectral index
-        out86 = eh.image.load_fits(outdir + model +'_ngeht_86_nomf.fits')   
+        out86 = eh.image.load_fits(outdir + model +'_86_nomf.fits')   
         rprior = out86.blur_circ(50*eh.RADPERUAS)        
         rprior.imvec *= refzbl/rprior.total_flux()
         rprior.rf = reffreq
